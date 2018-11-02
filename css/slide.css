@@ -1,0 +1,56 @@
+body {
+    margin: 0;
+    background: #ffffff;
+}
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+img {
+    vertical-align: top;
+}
+body,
+html {
+    height: 100%;
+}
+.page {
+    height: 100%;
+    overflow: hidden;
+}
+.wrap {
+    position: relative;
+    overflow: hidden;
+}
+.list {
+    overflow: hidden;
+}
+.list li {
+    float: left;
+}
+.list img {
+    width: 100%;
+}
+.nav {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 10px;
+    text-align: center;
+    height: 10px;
+}
+.nav a {
+    vertical-align: top;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background: #fff;
+}
+.nav .focus {
+    background: #6f0;
+}
+.textList li {
+    font: 16px/34px "宋体";
+    border-bottom: 1px solid #000;
+}

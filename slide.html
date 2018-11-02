@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width,user-scalable=no" />
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link type="text/css" rel="styleSheet" href="./css/slide.css"/>
+    <script src="js/m-touch.js"></script>
+</head>
+<body>
+<div class="page">
+    <div class="scroll">
+        <div class="wrap">
+            <ul class="list">
+                <li>
+                    <a href="#">
+                        <img src="img/3.jpeg">
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="img/4.jpeg">
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="img/5.jpeg">
+                    </a>
+                </li>
+            </ul>
+            <nav class="nav">
+                <a href="javascript:;" class="focus"></a>
+                <a href="javascript:;"></a>
+                <a href="javascript:;"></a>
+            </nav>
+        </div>
+        <ul class="textList"></ul>
+    </div>
+</div>
+<script type="text/javascript" src="js/m-touch.js"></script>
+<script type="text/javascript">
+    /* 列表的内容添加 */
+    (function(){
+        let page = document.querySelector('.page');
+        swiper({
+            wrap: page,
+            dir: "y"
+        });
+    })();
+    /* 布局设置 */
+    (function(){
+        let wrap = document.querySelector('.wrap');
+        let list = document.querySelector('.list');
+        let imgs = list.children;
+        //复制列表处理无缝
+        list.innerHTML += list.innerHTML;
+        list.style.width = imgs.length * wrap.clientWidth + "px";
+        for(let i = 0; i < imgs.length; i++){
+            imgs[i].style.width = wrap.clientWidth + "px";
+        }
+    })();
+    /* 幻灯片滑屏 */
+    (function(){
+        let wrap = document.querySelector('.wrap');
+        let list = document.querySelector('.list');
+        let imgs = list.children;
+        let navs = document.querySelectorAll('.nav a');
+        let imgW = wrap.clientWidth;
+        let now = 0;
+        let timer = 0;
+        swiper({
+            wrap: wrap,
+            dir: "x",
+            start: function(){
+                clearInterval(timer);
+                list.style.transition = "none";
+                let nowX = css(list,"translateX");
+                now = Math.round(Math.abs(nowX/imgW));
+                if(now == 0){
+                    now = imgs.length/2;
+                } else if (now == imgs.length - 1){
+                    now = imgs.length/2 - 1;
+                }
+                let targetX = -now*imgW
+                css(list,"translateX",targetX);
+            },
+            end: function(){
+                let nowX = css(list,"translateX");//获取当前移动的距离
+                now = Math.round(Math.abs(nowX/imgW));//根据当前移动的距离，计算出应该停在第几张
+                let targetX = -now*imgW //根据当前要停在第几张，计算出移动的距离
+                //console.log(targetX);
+                list.style.transition = ".3s";
+                css(list,"translateX",targetX);
+                for (let i = 0; i < navs.length; i++) {
+                    navs[i].className = "";
+                }
+                //console.log(now);
+                navs[now%navs.length].className = "focus";
+                auto();
+            }
+        });
+        auto();
+        /* 自动播放 */
+        function auto(){
+            timer = setInterval(function(){
+                /*判断走到最后一张,拉到第一组最后一张 */
+                if(now == imgs.length - 1){
+                    now = imgs.length/2 - 1;
+                    list.style.transition = "none";
+                    css(list,"translateX",-now*imgW);
+                }
+
+
+                /* 走到下一张*/
+                now++;
+                setTimeout(function(){
+                    list.style.transition = ".3s";
+                    css(list,"translateX",-now*imgW);
+                },50);
+                for (let i = 0; i < navs.length; i++) {
+                    navs[i].className = "";
+                }
+                navs[now%navs.length].className = "focus";
+            },3000);
+        }
+    })();
+</script>
+</body>
+</html>
